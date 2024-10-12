@@ -1,6 +1,5 @@
 ﻿using CatalogRJD.Library.AI;
 using CatalogRJD.Library.DB;
-using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,36 +10,37 @@ namespace CatalogRJD.Library
 {
     public class DataProcessor
     {
+        ModelInteractor _interactor;
+        IDAL _dal;
+
+        public DataProcessor(ModelInteractor modelInteractor, IDAL dal)
+        { 
+            _interactor = modelInteractor;
+            _dal = dal;
+        }
+
         public async Task ProcessData(int startIndex=0, int count=5)
         {
-            Mock<IDAL> mockdal = new Mock<IDAL>();
-            mockdal.Setup(x => x.GetProducts(startIndex, count)).Returns(() => { return new List<Product>() 
-            { 
-                new Product() { Id="4573610892", Name= "ЩЕТКА ГЕНЕРАТОРА", Mark = "BOSCH 1127014027 (BX2152)", Parameters = "5Х8Х23", MeasureUnitId = "796", Okpd2= "29.31.22.190", Okpd2Name="Оборудование электрическое прочее для транспортных средств, не включенное в другие группировки" }
-            }; });
+            _interactor = new ModelInteractor();
 
-            IDAL dal = mockdal.Object;
+            _dal.Open();
 
-            ModelInteractor interactor = new ModelInteractor();
-
-            dal.Open();
-
-            List<Product> products = dal.GetProducts(startIndex,count);
+            List<Product> products = _dal.GetProducts(startIndex,count);
 
             foreach (Product product in products)
             {
-                var group = await interactor.Classify(product.Name);
+                var group = await _interactor.Classify(product.Name + " " + product.Mark);
 
-                var parameters = await interactor.Parameterize(product.Name + " " + product.Mark + " " + product.Parameters + " " + product.Okpd2Name);
+                var parameters = await _interactor.Parameterize(product.Name + " " + product.Mark + " " + product.Parameters + " " + product.Okpd2Name);
 
-                //Console.WriteLine(product.Id + " " + group + "\n" + String.Join("\n", parameters));
+                _dal.UpdateGroup(product.Id, group);
 
-                dal.UpdateGroup(product.Id, group);
+                _dal.AddParameters(product.Id, parameters);
 
-                dal.AddParameters(product.Id, parameters);
+                Console.WriteLine(product.Id + "\n" + group + "\n" + String.Join("\n", parameters));
             }
 
-            dal.Close();
+            _dal.Close();
         }
     }
 }
