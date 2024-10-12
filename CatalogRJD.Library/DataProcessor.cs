@@ -33,11 +33,11 @@ namespace CatalogRJD.Library
 
                 var parameters = await _interactor.Parameterize(product.Name + " " + product.Mark + " " + product.Parameters + " " + product.Okpd2Name);
 
+                Console.WriteLine(product.Id + "\n" + group + "\n" + String.Join("\n", parameters));
+
                 _dal.UpdateGroup(product.Id, group);
 
                 _dal.AddParameters(product.Id, parameters);
-
-                Console.WriteLine(product.Id + "\n" + group + "\n" + String.Join("\n", parameters));
             }
 
             _dal.Close();

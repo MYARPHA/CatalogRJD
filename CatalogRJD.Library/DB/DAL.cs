@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Data.Sqlite;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -10,21 +12,15 @@ namespace CatalogRJD.Library.DB
     public class DAL : IDAL
     {
         /// <summary>
-        /// Строка подключения
-        /// </summary>
-        public string ConnectionString { get; set; }
-
-        /// <summary>
         /// Соединение с БД
         /// </summary>
-        public SqlConnection SqlConnection { get; set; }
+        public IDbConnection SqlConnection { get; set; }
 
-        public DAL(string connectionString) 
+        public DAL(SqliteConnection connection)
         {
-            ConnectionString = connectionString;
-            SqlConnection = new SqlConnection(ConnectionString);
+            SqlConnection = connection;
         }
-        
+
         /// <summary>
         /// Открывает соединение с БД
         /// </summary>
@@ -54,9 +50,11 @@ namespace CatalogRJD.Library.DB
             
             string query = "SELECT SKIP " + startIndex + " TOP " + count + " * FROM [MTR] LEFT JOIN [OKPD_2] ON [MTR].[ОКПД2] = [OKPD_2].[OKPD2] LEFT JOIN [ED_IZM] ON [MTR].[Базисная Единица измерения] = [ED_IZM].[Код ЕИ]";
 
-            SqlCommand cmd = new SqlCommand(query, SqlConnection);
+            IDbCommand cmd = SqlConnection.CreateCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = query;
 
-            SqlDataReader reader = cmd.ExecuteReader();
+            IDataReader reader = cmd.ExecuteReader();
 
             while (reader.Read())
             {
@@ -83,11 +81,13 @@ namespace CatalogRJD.Library.DB
         {
             if (SqlConnection.State == System.Data.ConnectionState.Closed) SqlConnection.Open();
 
-            string query = "UPDATE [MTR] SET [Группа] = " + group + " WHERE [код СКМТР] = " + productId; 
+            string query = "UPDATE [MTR] SET [Группа] = " + group + " WHERE [код СКМТР] = " + productId;
 
-            SqlCommand command = new SqlCommand(query, SqlConnection);
+            IDbCommand cmd = SqlConnection.CreateCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = query;
 
-            return command.ExecuteNonQuery() != 0;
+            return cmd.ExecuteNonQuery() != 0;
         }
 
         /// <summary>
@@ -107,9 +107,12 @@ namespace CatalogRJD.Library.DB
 
             }
             query = query.Remove(query.Length - 1);
-            SqlCommand sqlCommand = new SqlCommand(query, SqlConnection);
 
-            sqlCommand.ExecuteNonQuery();
+            IDbCommand cmd = SqlConnection.CreateCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = query;
+
+            cmd.ExecuteNonQuery();
         }
     }
 }
