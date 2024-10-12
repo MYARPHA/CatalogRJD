@@ -11,4 +11,8 @@
     <PackageReference Include="OpenAI" Version="2.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CatalogRJD.Library\CatalogRJD.Library.csproj" />
+  </ItemGroup>
+
 </Project>
