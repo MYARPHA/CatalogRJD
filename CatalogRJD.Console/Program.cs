@@ -1,5 +1,4 @@
-﻿
-using CatalogRJD.Library;
+﻿using CatalogRJD.Library.AI;
 using System.Text;
 
 namespace CatalogRJD.Console
