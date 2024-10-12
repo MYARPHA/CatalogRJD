@@ -9,28 +9,44 @@ namespace CatalogRJD.Library.DB
 {
     public class DAL : IDAL
     {
+        /// <summary>
+        /// Строка подключения
+        /// </summary>
         public string ConnectionString { get; set; }
+
+        /// <summary>
+        /// Соединение с БД
+        /// </summary>
         public SqlConnection SqlConnection { get; set; }
 
-        public DAL()
-        {
-            SqlConnection = new SqlConnection();
-        }
         public DAL(string connectionString) 
         {
             ConnectionString = connectionString;
             SqlConnection = new SqlConnection(ConnectionString);
         }
         
+        /// <summary>
+        /// Открывает соединение с БД
+        /// </summary>
         public void Open()
         {
             SqlConnection.Open();
         }
+
+        /// <summary>
+        /// Закрывает соединение с БД
+        /// </summary>
         public void Close()
         {
             SqlConnection.Close();
         }
 
+        /// <summary>
+        /// Возвращает список продуктов
+        /// </summary>
+        /// <param name="startIndex">Количество пропускаемых строк</param>
+        /// <param name="count">Количество возвращаемых строк</param>
+        /// <returns>Список продуктов</returns>
         public List<Product> GetProducts(int startIndex, int count)
         {
             List<Product> products = new List<Product>();
@@ -48,17 +64,21 @@ namespace CatalogRJD.Library.DB
                 product.Id = (string)reader["код СКМТР"];
                 product.Name = (string)reader["Наименование"];
                 product.Mark = (string)reader["Маркировка"];
-                //product.Reglaments = (string)reader["Регламенты (ГОСТ/ТУ)"];
+                product.Reglaments = (string)reader["Регламенты (ГОСТ/ТУ)"];
                 product.Parameters = (string)reader["Параметры"];
                 product.MeasureUnit = (string)reader["ED_IZM.Наименование"];
-                //product.MeasureUnitId = (string)reader["Базисная Единица измерения"];
-                //product.Okpd2 = (string)reader["ОКПД2"];
                 product.Okpd2Name = (string)reader["OKPD2_NAME"];
                 products.Add(product);
             }
             return products;
         }
 
+        /// <summary>
+        /// Обновляет группу продукта
+        /// </summary>
+        /// <param name="productId">идентификатор продукта</param>
+        /// <param name="group">имя группы</param>
+        /// <returns></returns>
         public bool UpdateGroup(string productId, string group)
         {
             if (SqlConnection.State == System.Data.ConnectionState.Closed) SqlConnection.Open();
@@ -70,6 +90,11 @@ namespace CatalogRJD.Library.DB
             return command.ExecuteNonQuery() != 0;
         }
 
+        /// <summary>
+        /// Добавляет параметры продукта в БД
+        /// </summary>
+        /// <param name="productId">идентификатор продукта</param>
+        /// <param name="parameters">массив параметров</param>
         public void AddParameters(string productId, string[] parameters)
         {
             if (SqlConnection.State == System.Data.ConnectionState.Closed) SqlConnection.Open();
