@@ -20,6 +20,7 @@ namespace CatalogRJD.Console
             //});
 
 
+
             //IDAL _dal = mockdal.Object;
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
             builder.DataSource = "RJDdatabase.db";
