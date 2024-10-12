@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CatalogRJD.Library.DB
 {
-    public class DAL //: IDAL
+    public class DAL : IDAL
     {
         public string ConnectionString { get; set; }
         public SqlConnection SqlConnection { get; set; }
@@ -68,6 +68,23 @@ namespace CatalogRJD.Library.DB
             SqlCommand command = new SqlCommand(query, SqlConnection);
 
             return command.ExecuteNonQuery() != 0;
+        }
+
+        public void AddParameters(string productId, string[] parameters)
+        {
+            if (SqlConnection.State == System.Data.ConnectionState.Closed) SqlConnection.Open();
+
+            string query = "INSERT INTO Parameters (id, name, value) VALUES ";
+            foreach (var item in parameters)
+            {
+                var items = item.Split(": ");
+                query += $"('{productId}','{items[0]}','{items[1]}'),";
+
+            }
+            query = query.Remove(query.Length - 1);
+            SqlCommand sqlCommand = new SqlCommand(query, SqlConnection);
+
+            sqlCommand.ExecuteNonQuery();
         }
     }
 }
