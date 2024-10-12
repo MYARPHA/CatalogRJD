@@ -1,4 +1,4 @@
-﻿namespace CatalogRJD.Library
+﻿namespace CatalogRJD.Library.AI
 {
     public class JsonResponse
     {

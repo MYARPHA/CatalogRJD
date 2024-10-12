@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace CatalogRJD.Library
+namespace CatalogRJD.Library.AI
 {
     public class ModelInteractor
     {
@@ -14,7 +14,7 @@ namespace CatalogRJD.Library
 
             var requestBody = new
             {
-                model = "qwen2.5-14b-instruct", // Укажите вашу модель
+                model = AiModel,
                 prompt = "Выбери категорию для продукта: " + text,
                 max_tokens = 512,
                 response_format = new
@@ -62,7 +62,7 @@ namespace CatalogRJD.Library
 
             var requestBody = new
             {
-                model = "lmstudio-community/Qwen2.5-14B-Instruct-GGUF/Qwen2.5-14B-Instruct-Q4_K_M.gguf", // Укажите вашу модель
+                model = AiModel,
                 prompt = "Укажи список параметров продукта: " + text,
                 max_tokens = 512,
                 response_format = new
