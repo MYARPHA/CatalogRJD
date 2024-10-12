@@ -7,11 +7,15 @@ using System.Threading.Tasks;
 
 namespace CatalogRJD.Library.DB
 {
-    public class DAL
+    public class DAL //: IDAL
     {
         public string ConnectionString { get; set; }
         public SqlConnection SqlConnection { get; set; }
 
+        public DAL()
+        {
+            SqlConnection = new SqlConnection();
+        }
         public DAL(string connectionString) 
         {
             ConnectionString = connectionString;
@@ -27,7 +31,7 @@ namespace CatalogRJD.Library.DB
             SqlConnection.Close();
         }
 
-        public List<Product> GetProducts(int startIndex=0, int count=5)
+        public List<Product> GetProducts(int startIndex, int count)
         {
             List<Product> products = new List<Product>();
             if (SqlConnection.State == System.Data.ConnectionState.Closed) SqlConnection.Open();
