@@ -5,41 +5,43 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CatalogRJD.DesktopDemo"
         mc:Ignorable="d"
-        Title="Каталог" Height="450" Width="800">
+        Title="Каталог" Height="450" Width="800" Background="#FFFBFBFB">
     <Window.Resources>
         <local:MainViewModel x:Key="MainViewModel"/>
     </Window.Resources>    
     <Grid DataContext="{Binding Source={StaticResource MainViewModel}}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="0.8*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <ItemsControl ItemsSource="{Binding Products}" Padding="10">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Button Margin="10" Padding="5" Command="{Binding Source={StaticResource MainViewModel}, Path=SelectCommand}" CommandParameter="{Binding}">
-                        <TextBlock Text="{Binding Name}" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        <Button.Style>
-                            <Style TargetType="Button">
-                                <Setter Property="Background" Value="Lavender"/>
-                                <Setter Property="BorderBrush" Value="LavenderBlush"/>
-                            </Style>
-                        </Button.Style>
-                    </Button>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+        <ScrollViewer Grid.Column="1">
+            <ItemsControl ItemsSource="{Binding Products}" Padding="10">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Rows="15"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Margin="5" Padding="4" Command="{Binding Source={StaticResource MainViewModel}, Path=SelectCommand}" CommandParameter="{Binding}" FontFamily="Bahnschrift Light">
+                            <TextBlock Text="{Binding Name}" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="#FFF7DADA"/>
+                                    <Setter Property="BorderBrush" Value="#FFD24040"/>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
 
-        <StackPanel Grid.Column="1" Orientation="Vertical" Margin="5">
-            <TextBlock Text="Выбранный товар:"/>
-            <TextBlock Text="{Binding Product.Category}" TextWrapping="Wrap" Margin="5"/>
-            <TextBlock Text="{Binding Product.Name}" TextWrapping="Wrap" Margin="5"/>
-            <ItemsControl ItemsSource="{Binding Product.ParametersList}" Margin="5">
+        <StackPanel Grid.Column="0" Orientation="Vertical" Margin="5">
+            <TextBlock Text="Выбранный товар" Margin="9" HorizontalAlignment="Center" FontSize="20" FontFamily="Bahnschrift"/>
+            <TextBlock Text="{Binding Product.Category}" TextWrapping="Wrap" Margin="9" HorizontalAlignment="Center" FontFamily="Bahnschrift Light"/>
+            <TextBlock Text="{Binding Product.Name}" TextWrapping="Wrap" Margin="9" HorizontalAlignment="Center" FontFamily="Bahnschrift Light"/>
+            <ItemsControl ItemsSource="{Binding Product.ParametersList}" Margin="9">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Grid>

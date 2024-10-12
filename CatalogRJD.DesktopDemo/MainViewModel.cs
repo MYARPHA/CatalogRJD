@@ -25,7 +25,7 @@ namespace CatalogRJD.DesktopDemo
             SqliteConnection connection = new SqliteConnection(builder.ConnectionString);
             DAL dal = new DAL(connection);
 
-            List<Product> products = dal.GetProducts(0,5);
+            List<Product> products = dal.GetProducts(0,15);
             foreach (var product in products)
             {
                 product.ParametersList = dal.GetParameters(product.ScmtrCode);
