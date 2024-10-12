@@ -1,14 +1,11 @@
 ﻿using CatalogRJD.Library.AI;
 using CatalogRJD.Library.DB;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static CatalogRJD.Library.AI.ProductParameters;
 
 namespace CatalogRJD.Library
 {
+    /// <summary>
+    /// Обработчик данных
+    /// </summary>
     public class DataProcessor
     {
         ModelInteractor _interactor;
@@ -20,10 +17,14 @@ namespace CatalogRJD.Library
             _dal = dal;
         }
 
-        public async Task ProcessData(int startIndex = 0, int count = 5)
+        /// <summary>
+        /// Обрабатывает данные продуктов, обновляет категории, добавляет параметры
+        /// </summary>
+        /// <param name="startIndex">количество пропускаемых строк</param>
+        /// <param name="count">количество обрабатываемых строк</param>
+        /// <returns></returns>
+        public async Task ProcessData(int startIndex, int count)
         {
-            _interactor = new ModelInteractor();
-
             _dal.Open();
 
             List<Product> products = _dal.GetProducts(startIndex, count);

@@ -12,7 +12,7 @@ namespace CatalogRJD.Library.AI
         /// </summary>
         /// <param name="aiModel">API-Идентификатор модели</param>
         /// <param name="apiUrl">Web-Адрес API</param>
-        public ModelInteractor(string aiModel = "qwen2.5-14b-instruct", string apiUrl = "http://127.0.0.1:1234/v1/completions")
+        public ModelInteractor(string aiModel, string apiUrl)
         {
             AiModel = aiModel;
             ApiUrl = apiUrl;
