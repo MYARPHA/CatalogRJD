@@ -1,11 +1,17 @@
 ﻿namespace CatalogRJD.Library.AI
 {
+    /// <summary>
+    /// Результат выполнения запроса к OpenAI-like API
+    /// </summary>
     public class JsonResponse
     {
         public string id { get; set; }
         public string _object { get; set; }
         public int created { get; set; }
         public string model { get; set; }
+        /// <summary>
+        /// Ответы от языковой модели
+        /// </summary>
         public Choice[] choices { get; set; }
         public Usage usage { get; set; }
 

@@ -68,14 +68,18 @@ namespace CatalogRJD.Library.DB
                 product.EdIzmName = (string)reader["ed_izm"];               
                 product.Category = (string)reader["category"];
                 product.Okpd2 = (string)reader["okpd2"];
+                product.Okpd2Name = (string)reader["okpd2_name"];
                 products.Add(product);
             }
             Close();
             return products;
         }
 
-
-        
+        /// <summary>
+        /// Возвращает параметры продукта
+        /// </summary>
+        /// <param name="productId">идентификатор продукта</param>
+        /// <returns>Список параметров</returns>
         public List<ProductParameter> GetParameters(string productId)
         {
             List<ProductParameter> parameters = new List<ProductParameter>();
@@ -99,7 +103,6 @@ namespace CatalogRJD.Library.DB
             Close();
             return parameters;
         }
-
 
         /// <summary>
         /// Обновляет группу продукта
