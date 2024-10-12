@@ -66,13 +66,40 @@ namespace CatalogRJD.Library.DB
                 product.Regulations = (string)reader["regulations"];
                 product.Parameters = (string)reader["parameters"];
                 product.EdIzmName = (string)reader["ed_izm"];               
-                product.Grouping = (string)reader["category"];
+                product.Category = (string)reader["category"];
                 product.Okpd2 = (string)reader["okpd2"];
                 products.Add(product);
             }
             Close();
             return products;
         }
+
+
+        
+        public List<ProductParameter> GetParameters(string productId)
+        {
+            List<ProductParameter> parameters = new List<ProductParameter>();
+            if (SqlConnection.State == System.Data.ConnectionState.Closed) SqlConnection.Open();
+            
+            string query = "SELECT * FROM [Parameters] WHERE [product_id] = " + productId;
+
+            IDbCommand cmd = SqlConnection.CreateCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = query;
+
+            IDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                ProductParameter parameter = new ProductParameter();
+                parameter.parameter_name = (string)reader["name"];
+                parameter.parameter_value = (string)reader["value"];
+                parameters.Add(parameter);
+            }
+            Close();
+            return parameters;
+        }
+
 
         /// <summary>
         /// Обновляет группу продукта
@@ -101,6 +128,8 @@ namespace CatalogRJD.Library.DB
         /// <param name="parameters">массив параметров</param>
         public void AddParameters(string productId, ProductParameter[] parameters)
         {
+            if (parameters == null || parameters.Length == 0) return;
+
             if (SqlConnection.State == System.Data.ConnectionState.Closed) SqlConnection.Open();
 
             string query = "INSERT INTO Parameters (product_id, name, value) VALUES ";

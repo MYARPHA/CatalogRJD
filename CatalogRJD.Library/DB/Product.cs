@@ -1,4 +1,7 @@
-﻿namespace CatalogRJD.Library.DB
+﻿using CatalogRJD.Library.AI;
+using static CatalogRJD.Library.AI.ProductParameters;
+
+namespace CatalogRJD.Library.DB
 {
     public class Product
     {
@@ -7,11 +10,11 @@
         public string Marking { get; set; }
         public string Regulations { get; set; }
         public string Parameters { get; set; }
-        public List<string> ParametersList { get; set; }
+        public List<ProductParameter> ParametersList { get; set; }
         public string EdIzmName { get; set; }
         public string Okpd2 { get; set; }
         public string Okpd2Name { get; set; }
-        public string Grouping { get; set; }
+        public string Category { get; set; }
 
     }
 }
