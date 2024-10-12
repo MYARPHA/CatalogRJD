@@ -61,13 +61,14 @@ namespace CatalogRJD.Library.DB
             while (reader.Read())
             {
                 Product product = new Product();
-                product.Id = (string)reader["код СКМТР"];
-                product.Name = (string)reader["Наименование"];
-                product.Mark = (string)reader["Маркировка"];
-                product.Reglaments = (string)reader["Регламенты (ГОСТ/ТУ)"];
-                product.Parameters = (string)reader["Параметры"];
-                product.MeasureUnit = (string)reader["ED_IZM.Наименование"];
-                product.Okpd2Name = (string)reader["OKPD2_NAME"];
+                product.ScmtrCode = (string)reader["scmtr_code"];
+                product.Name = (string)reader["name"];
+                product.Marking = (string)reader["marking"];
+                product.Regulations = (string)reader["regulations"];
+                product.Parameters = (string)reader["parameters"];
+                product.EdIzmName = (string)reader["ed_izm"];               
+                product.Grouping = (string)reader["grouping"];
+                product.Okpd2 = (string)reader["okpd2"];
                 products.Add(product);
             }
             return products;

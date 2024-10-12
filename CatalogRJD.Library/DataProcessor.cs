@@ -29,15 +29,15 @@ namespace CatalogRJD.Library
 
             foreach (Product product in products)
             {
-                var group = await _interactor.Classify(product.Name + " " + product.Mark);
+                var group = await _interactor.Classify(product.Name + " " + product.Marking);
 
-                var parameters = await _interactor.Parameterize(product.Name + " " + product.Mark + " " + product.Parameters + " " + product.Okpd2Name);
+                var parameters = await _interactor.Parameterize(product.Name + " " + product.Marking + " " + product.Parameters + " " + product.Okpd2Name);
 
-                _dal.UpdateGroup(product.Id, group);
+                _dal.UpdateGroup(product.ScmtrCode, group);
 
-                _dal.AddParameters(product.Id, parameters);
+                _dal.AddParameters(product.ScmtrCode, parameters);
 
-                Console.WriteLine(product.Id + "\n" + group + "\n" + String.Join("\n", parameters));
+                Console.WriteLine(product.ScmtrCode + "\n" + group + "\n" + String.Join("\n", parameters));
             }
 
             _dal.Close();
