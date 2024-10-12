@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using static CatalogRJD.Library.AI.ProductParameters;
 
 namespace CatalogRJD.Library.AI
 {
@@ -41,7 +42,7 @@ namespace CatalogRJD.Library.AI
                 var requestBody = new
                 {
                     model = AiModel,
-                    prompt = "Выбери категорию для продукта: " + text,
+                    prompt = "Выбери общую категорию для продукта: " + text,
                     max_tokens = 512,
                     response_format = new
                     {
@@ -50,6 +51,7 @@ namespace CatalogRJD.Library.AI
                         {
                             name = "product_category_response",
                             strict = "true",
+                            language = "ru",
                             schema = new
                             {
                                 type = "object",
@@ -64,7 +66,7 @@ namespace CatalogRJD.Library.AI
                             }
                         }
                     },
-                    temperature = 0.7
+                    temperature = 0.9
                 };
 
                 // Преобразуем тело запроса в JSON
@@ -88,14 +90,14 @@ namespace CatalogRJD.Library.AI
         /// <param name="text">текстовое описание продукта и его параметров</param>
         /// <returns>массив строк с параметрами продукта</returns>
         /// <exception cref="HttpRequestException">Ошибка HTTP запроса к API</exception>
-        public async Task<string[]> Parameterize(string text)
+        public async Task<ProductParameter[]> Parameterize(string text)
         {
             using (_httpClient = new HttpClient())
             {
                 var requestBody = new
                 {
                     model = AiModel,
-                    prompt = "Укажи список параметров продукта: " + text,
+                    prompt = "Укажи список основных параметров (не более 10) этого продукта: " + text,
                     max_tokens = 512,
                     response_format = new
                     {
@@ -104,6 +106,7 @@ namespace CatalogRJD.Library.AI
                         {
                             name = "product_parameters_response",
                             strict = "true",
+                            language = "ru",
                             schema = new
                             {
                                 type = "object",
@@ -114,7 +117,18 @@ namespace CatalogRJD.Library.AI
                                         type = "array",
                                         items = new
                                         {
-                                            type = "string"
+                                            type = "object",
+                                            properties = new
+                                            {
+                                                parameter_name = new
+                                                {
+                                                    type = "string"
+                                                },
+                                                parameter_value = new
+                                                { 
+                                                    type = "string" 
+                                                } 
+                                            }
                                         }
                                     }
                                 },
@@ -122,7 +136,7 @@ namespace CatalogRJD.Library.AI
                             }
                         }
                     },
-                    temperature = 0.7
+                    temperature = 0.6
                 };
 
                 // Преобразуем тело запроса в JSON

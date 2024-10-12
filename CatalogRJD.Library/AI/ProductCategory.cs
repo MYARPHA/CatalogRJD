@@ -2,5 +2,3 @@
 {
     public string product_category { get; set; }
 }
-
-
