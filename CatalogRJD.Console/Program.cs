@@ -22,8 +22,7 @@ namespace CatalogRJD.Console
 
             //Обработка данных БД с использованием AI
             DataProcessor processor = new DataProcessor(modelInteractor, _dal);
-            await processor.ProcessData(0, 15);
-
+            await processor.ProcessData(0, 3);
         }
     }
 }

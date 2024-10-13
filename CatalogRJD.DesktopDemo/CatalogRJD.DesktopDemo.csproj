@@ -12,4 +12,10 @@
     <ProjectReference Include="..\CatalogRJD.Library\CatalogRJD.Library.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="RJDdatabase.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
